@@ -14,7 +14,7 @@ export default defineConfig({
     port: 5173,
     // Same-origin requests in dev, so the refresh-token cookie just works.
     proxy: {
-      '/api': 'http://localhost:4000',
+      '/api': process.env.VITE_PROXY_TARGET ?? 'http://localhost:4000',
     },
   },
 })
