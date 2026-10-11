@@ -4,7 +4,9 @@ import { GuestOnly, RequireAuth } from '@/features/auth/RouteGuards'
 import LoginPage from '@/pages/LoginPage'
 import NotesPage from '@/pages/NotesPage'
 import NotFoundPage from '@/pages/NotFoundPage'
+import PostsPage from '@/pages/PostsPage'
 import RegisterPage from '@/pages/RegisterPage'
+import UserPostsPage from '@/pages/UserPostsPage'
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +24,8 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="/notes" replace /> },
           { path: '/notes', element: <NotesPage /> },
+          { path: '/posts', element: <PostsPage /> },
+          { path: '/users/:userId/posts', element: <UserPostsPage /> },
         ],
       },
     ],
