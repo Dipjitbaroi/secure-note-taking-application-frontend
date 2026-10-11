@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { onSessionExpired, refreshSession, setAccessToken } from '@/lib/api'
+import { onSessionExpired, refreshSession, setTokens } from '@/lib/api'
 import { queryClient } from '@/lib/queryClient'
 import type { AuthResult, User } from '@/types/api'
 import * as authApi from './api'
@@ -10,14 +10,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [status, setStatus] = useState<AuthStatus>('loading')
 
-  const startSession = useCallback(({ user, accessToken }: AuthResult) => {
-    setAccessToken(accessToken)
+  const startSession = useCallback(({ user, ...tokens }: AuthResult) => {
+    setTokens(tokens)
     setUser(user)
     setStatus('authenticated')
   }, [])
 
   const endSession = useCallback(() => {
-    setAccessToken(null)
+    setTokens(null)
     setUser(null)
     setStatus('guest')
     queryClient.clear()

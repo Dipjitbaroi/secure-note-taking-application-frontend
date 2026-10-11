@@ -1,18 +1,21 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios'
 import type { AuthResult } from '@/types/api'
+import { getRefreshToken, setRefreshToken } from './tokenStorage'
 
 const baseURL = import.meta.env.VITE_API_URL ?? '/api/v1'
 
 export const api = axios.create({ baseURL, withCredentials: true })
 
-// The access token only lives in memory. On a page reload it's restored
-// from the httpOnly refresh cookie via /auth/refresh.
+// The access token only lives in memory. On a page reload it's restored via
+// /auth/refresh, using the stored refresh token (or the httpOnly cookie when
+// the API is on the same site).
 let accessToken: string | null = null
 let refreshRequest: Promise<AuthResult | null> | null = null
 let sessionExpiredHandler: (() => void) | null = null
 
-export function setAccessToken(token: string | null) {
-  accessToken = token
+export function setTokens(tokens: { accessToken: string; refreshToken: string } | null) {
+  accessToken = tokens?.accessToken ?? null
+  setRefreshToken(tokens?.refreshToken ?? null)
 }
 
 export function onSessionExpired(handler: (() => void) | null) {
@@ -22,13 +25,17 @@ export function onSessionExpired(handler: (() => void) | null) {
 // Several requests can hit a 401 at the same time; they all share one refresh call.
 export function refreshSession() {
   refreshRequest ??= axios
-    .post<{ data: AuthResult }>(`${baseURL}/auth/refresh`, null, { withCredentials: true })
+    .post<{ data: AuthResult }>(
+      `${baseURL}/auth/refresh`,
+      { refreshToken: getRefreshToken() ?? undefined },
+      { withCredentials: true },
+    )
     .then((res) => {
-      accessToken = res.data.data.accessToken
+      setTokens(res.data.data)
       return res.data.data
     })
     .catch(() => {
-      accessToken = null
+      setTokens(null)
       return null
     })
     .finally(() => {

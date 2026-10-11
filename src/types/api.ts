@@ -57,9 +57,13 @@ export interface UserPosts extends Paginated<Post> {
   author: Pick<User, '_id' | 'name'>
 }
 
-export interface AuthResult {
-  user: User
+export interface AuthTokens {
   accessToken: string
+  refreshToken: string
+}
+
+export interface AuthResult extends AuthTokens {
+  user: User
 }
 
 export interface PageParams {

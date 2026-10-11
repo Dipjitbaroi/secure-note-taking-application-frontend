@@ -18,7 +18,7 @@ import { useAuth } from '@/features/auth/auth-context'
 import { changePasswordSchema, type ChangePasswordValues } from '@/features/auth/schemas'
 import { useUpdateProfile } from '@/features/users/hooks'
 import { profileSchema, type ProfileValues } from '@/features/users/schemas'
-import { getErrorMessage, setAccessToken } from '@/lib/api'
+import { getErrorMessage, setTokens } from '@/lib/api'
 import { formatDate, parseInterests } from '@/lib/format'
 
 export default function ProfilePage() {
@@ -121,8 +121,7 @@ function ChangePasswordForm() {
 
   const onSubmit = async ({ currentPassword, newPassword }: ChangePasswordValues) => {
     try {
-      const { accessToken } = await authApi.changePassword({ currentPassword, newPassword })
-      setAccessToken(accessToken)
+      setTokens(await authApi.changePassword({ currentPassword, newPassword }))
       reset()
       toast.success('Password changed. Other sessions were signed out.')
     } catch (error) {
