@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router'
 import { AppLayout } from '@/components/layout/AppLayout'
-import { GuestOnly, RequireAuth } from '@/features/auth/RouteGuards'
+import { GuestOnly, RequireAdmin, RequireAuth } from '@/features/auth/RouteGuards'
+import UsersPage from '@/pages/admin/UsersPage'
 import LoginPage from '@/pages/LoginPage'
 import NotesPage from '@/pages/NotesPage'
 import NotFoundPage from '@/pages/NotFoundPage'
@@ -28,6 +29,14 @@ export const router = createBrowserRouter([
           { path: '/posts', element: <PostsPage /> },
           { path: '/users/:userId/posts', element: <UserPostsPage /> },
           { path: '/profile', element: <ProfilePage /> },
+          {
+            path: '/admin',
+            element: <RequireAdmin />,
+            children: [
+              { index: true, element: <Navigate to="/admin/users" replace /> },
+              { path: 'users', element: <UsersPage /> },
+            ],
+          },
         ],
       },
     ],
