@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { GuestOnly, RequireAdmin, RequireAuth } from '@/features/auth/RouteGuards'
+import AllNotesPage from '@/pages/admin/AllNotesPage'
 import UsersPage from '@/pages/admin/UsersPage'
 import LoginPage from '@/pages/LoginPage'
 import NotesPage from '@/pages/NotesPage'
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <Navigate to="/admin/users" replace /> },
               { path: 'users', element: <UsersPage /> },
+              { path: 'notes', element: <AllNotesPage /> },
             ],
           },
         ],
