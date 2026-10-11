@@ -17,8 +17,13 @@ The project is split into two repositories:
 | Web app | https://secure-note-taking-application-fron-five.vercel.app |
 | API | https://secure-note-taking-application-back.vercel.app/api/v1 ([health](https://secure-note-taking-application-back.vercel.app/api/v1/health)) |
 
-Sign up to try it as a normal user. Admin features need an admin account (see the backend's
-`npm run seed:admin`).
+### Demo account
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Admin | `admin@example.com` | `Admin@12345` |
+
+The login page also has a **Use demo admin** button. To try the normal user role, sign up with any email.
 
 ## Screenshots
 

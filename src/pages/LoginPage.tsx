@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/features/auth/auth-context'
+import { DEMO_ADMIN } from '@/features/auth/demoAccount'
 import { loginSchema, type LoginValues } from '@/features/auth/schemas'
 import { getErrorMessage } from '@/lib/api'
 
@@ -20,6 +21,7 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -33,6 +35,11 @@ export default function LoginPage() {
     } catch (error) {
       toast.error(getErrorMessage(error, 'Login failed'))
     }
+  }
+
+  const fillDemoAdmin = () => {
+    setValue('email', DEMO_ADMIN.email, { shouldValidate: true })
+    setValue('password', DEMO_ADMIN.password, { shouldValidate: true })
   }
 
   return (
@@ -78,6 +85,24 @@ export default function LoginPage() {
               </p>
             </FieldGroup>
           </form>
+        </CardContent>
+      </Card>
+
+      <Card size="sm" className="mt-4 bg-muted/50">
+        <CardHeader>
+          <CardTitle className="text-sm">Demo admin account</CardTitle>
+          <CardDescription>Use it to try the admin features.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+            <dt className="text-muted-foreground">Email</dt>
+            <dd className="font-mono select-all">{DEMO_ADMIN.email}</dd>
+            <dt className="text-muted-foreground">Password</dt>
+            <dd className="font-mono select-all">{DEMO_ADMIN.password}</dd>
+          </dl>
+          <Button type="button" variant="outline" size="sm" className="w-full" onClick={fillDemoAdmin}>
+            Use demo admin
+          </Button>
         </CardContent>
       </Card>
     </AuthLayout>
