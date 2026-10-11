@@ -5,6 +5,7 @@ import LoginPage from '@/pages/LoginPage'
 import NotesPage from '@/pages/NotesPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import PostsPage from '@/pages/PostsPage'
+import ProfilePage from '@/pages/ProfilePage'
 import RegisterPage from '@/pages/RegisterPage'
 import UserPostsPage from '@/pages/UserPostsPage'
 
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
           { path: '/notes', element: <NotesPage /> },
           { path: '/posts', element: <PostsPage /> },
           { path: '/users/:userId/posts', element: <UserPostsPage /> },
+          { path: '/profile', element: <ProfilePage /> },
         ],
       },
     ],
